@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purity Origins Hummus | أصالة الطعم</title>
+  <meta name="description" content="Authentic Levantine Flavors — Made Pure, Made Fresh. Syrian & Lebanese cuisine in Al Malaz, Riyadh." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cairo:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── Tokens ── */
+    :root {
+      --bg:         #fef9f5;
+      --fg:         #2d1f14;
+      --accent:     #d4a574;
+      --accent-dark:#c9945f;
+      --secondary:  #8b7355;
+      --muted:      #6b5a47;
+      --muted-bg:   #e8dcc8;
+      --card-bg:    #fff5ed;
+      --border:     #e8dcc8;
+      --white:      #ffffff;
+      --green:      #16a34a;
+      --green-dark: #15803d;
+      --radius:     12px;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--muted-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ── Typography ── */
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    .ar { font-family: 'Cairo', sans-serif; }
+
+    /* ── Scroll Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Animations ── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(-8px); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Navbar ── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.1rem 0;
+      transition: var(--transition);
+    }
+    #navbar.scrolled {
+      background: rgba(254,249,245,0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(45,31,20,0.1);
+      padding: 0.7rem 0;
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .nav-logo-icon {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 900; color: var(--fg);
+      font-family: 'Cairo', sans-serif;
+      flex-shrink: 0;
+    }
+    .nav-logo-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; color: var(--fg); }
+    .nav-logo-sub  { font-size: 0.65rem; color: var(--muted); font-family: 'Cairo', sans-serif; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: 0.9rem;
+      font-weight: 500; transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .btn-order-nav {
+      background: var(--green); color: #fff;
+      padding: 0.55rem 1.3rem; border-radius: 8px;
+      font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; transition: var(--transition);
+    }
+    .btn-order-nav:hover { background: var(--green-dark); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--fg); border-radius: 2px; transition: var(--transition); }
+
+    /* ── Mobile Nav ── */
+    .mobile-nav {
+      display: none; position: fixed;
+      inset: 0; background: var(--bg); z-index: 99;
+      flex-direction: column; align-items: center;
+      justify-content: center; gap: 2rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      text-decoration: none; color: var(--fg);
+      font-size: 1.4rem; font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      transition: color var(--transition);
+    }
+    .mobile-nav a:hover { color: var(--accent); }
+    .mobile-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none; font-size: 2rem;
+      color: var(--fg); cursor: pointer;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 1rem 2rem; border-radius: var(--radius);
+      font-weight: 700; font-size: 1rem; cursor: pointer;
+      text-decoration: none; border: none; transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-accent {
+      background: var(--accent); color: var(--fg);
+    }
+    .btn-accent:hover {
+      background: var(--accent-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212,165,116,0.4);
+    }
+    .btn-outline {
+      background: transparent; color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+    .btn-outline:hover {
+      background: rgba(212,165,116,0.08);
+      transform: translateY(-2px);
+    }
+    .btn-whatsapp { background: var(--green); color: #fff; }
+    .btn-whatsapp:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22,163,74,0.35);
+    }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 8rem 2rem 5rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #fef3e8 0%, #fdf6ee 40%, #fef0e0 70%, #fde8d0 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 10s ease infinite;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(212,165,116,0.1) 1px, transparent 1px),
+        radial-gradient(circle at 60% 70%, rgba(139,115,85,0.07) 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(212,165,116,0.06) 1px, transparent 1px);
+      background-size: 50px 50px, 80px 80px, 100px 100px;
+    }
+    .hero-glow-1 {
+      position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(212,165,116,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-glow-2 {
+      position: absolute; bottom: -150px; left: -50px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(139,115,85,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 800px; margin: 0 auto;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.8); backdrop-filter: blur(8px);
+      border: 1px solid rgba(212,165,116,0.3);
+      border-radius: 50px; padding: 0.5rem 1.2rem;
+      font-size: 0.9rem; font-weight: 600;
+      color: var(--accent); margin-bottom: 2rem;
+      font-family: 'Cairo', sans-serif;
+      animation: fadeInDown 0.8s ease both;
+    }
+    .hero-badge-dot {
+      display: inline-block; width: 8px; height: 8px;
+      background: var(--green); border-radius: 50%;
+      margin-left: 0.4rem;
+      animation: float 2s ease-in-out infinite;
+    }
+    .hero-title-ar {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 900; color: var(--accent);
+      line-height: 1.1; margin-bottom: 0.3rem;
+      animation: fadeInUp 0.9s ease 0.1s both;
+    }
+    .hero-title-en {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      font-weight: 900; color: var(--fg);
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.9s ease 0.2s both;
+    }
+    .hero-tagline-ar {
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.1rem; color: var(--muted);
+      margin-bottom: 0.3rem;
+      animation: fadeInUp 0.9s ease 0.3s both;
+    }
+    .hero-tagline-en {
+      font-size: 1.1rem; color: var(--muted);
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.9s ease 0.4s both;
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeInUp 0.9s ease 0.5s both;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      color: var(--accent); animation: bounce 2s ease-in-out infinite;
+    }
+    .hero-scroll svg { width: 24px; height: 24px; }
+
+    /* ── Section Base ── */
+    .section { padding: 5rem 2rem; }
+    .container { max-width: 1280px; margin: 0 auto; }
+    .section-label {
+      display: inline-block;
+      background: rgba(212,165,116,0.12); border: 1px solid rgba(212,165,116,0.3);
+      border-radius: 50px; padding: 0.35rem 1rem;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900; color: var(--fg); margin-bottom: 0.5rem;
+    }
+    .section-title-ar {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700; color: var(--accent); margin-bottom: 1rem;
+    }
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 600px; margin: 0 auto; }
+    .text-center { text-align: center; }
+
+    /* ── Story ── */
+    #story { background: rgba(255,255,255,0.5); }
+    .story-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .story-text p { color: var(--muted); font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; }
+    .story-visual {
+      position: relative; height: 380px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .story-visual-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(212,165,116,0.2), rgba(139,115,85,0.15));
+      border-radius: 20px; blur: 30px;
+    }
+    .story-visual-inner {
+      position: relative; z-index: 2; text-align: center;
+    }
+    .story-visual-icon { font-size: 5rem; margin-bottom: 1rem; }
+    .story-visual-word {
+      font-family: 'Cairo', sans-serif;
+      font-size: 2.5rem; font-weight: 900; color: var(--accent);
+    }
+    .story-visual-sub { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* ── Menu ── */
+    #menu { background: var(--bg); }
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-bottom: 3rem;
+    }
+    .dish-card {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      cursor: default;
+    }
+    .dish-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(212,165,116,0.18);
+      border-color: rgba(212,165,116,0.5);
+    }
+    .dish-emoji { font-size: 3rem; margin-bottom: 1rem; }
+    .dish-name-ar { font-family: 'Cairo', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--fg); margin-bottom: 0.3rem; }
+    .dish-name-en { font-size: 0.95rem; font-weight: 600; color: var(--accent); margin-bottom: 0.6rem; }
+    .dish-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Why ── */
+    #why { background: rgba(255,255,255,0.5); }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .why-card {
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem; text-align: center;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .why-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(212,165,116,0.15);
+    }
+    .why-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .why-title-ar { font-family: 'Cairo', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--fg); margin-bottom: 0.3rem; }
+    .why-title-en { font-size: 1rem; font-weight: 600; color: var(--accent); margin-bottom: 0.75rem; }
+    .why-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── Contact ── */
+    #contact { background: var(--bg); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-item { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.8rem; }
+    .contact-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .contact-label { font-weight: 700; color: var(--fg); font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .contact-value { color: var(--muted); font-size: 0.95rem; }
+    .contact-value a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .contact-value a:hover { text-decoration: underline; }
+    .contact-value-ar { font-family: 'Cairo', sans-serif; font-size: 0.88rem; color: var(--muted); margin-top: 0.2rem; }
+    .contact-map-wrap {
+      height: 380px; border-radius: var(--radius);
+      overflow: hidden; border: 2px solid var(--border);
+    }
+    .contact-map-wrap iframe { width: 100%; height: 100%; border: none; }
+    .contact-ctas { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--fg); color: rgba(254,249,245,0.85);
+      padding: 3rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 2rem;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 0.75rem; }
+    .footer-logo {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cairo', sans-serif; font-size: 1.2rem;
+      font-weight: 900; color: var(--fg); flex-shrink: 0;
+    }
+    .footer-brand-name { font-family: 'Playfair Display', serif; font-weight: 700; color: #fef9f5; }
+    .footer-brand-sub { font-family: 'Cairo', sans-serif; font-size: 0.7rem; color: rgba(254,249,245,0.5); }
+    .footer-copy { text-align: center; font-size: 0.8rem; color: rgba(254,249,245,0.55); line-height: 1.9; }
+    .footer-copy span { color: var(--accent); }
+    .footer-links { display: flex; justify-content: flex-end; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a {
+      color: rgba(254,249,245,0.6); text-decoration: none;
+      font-size: 0.85rem; transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── Floating WhatsApp ── */
+    .wa-float {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--green); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; box-shadow: 0 4px 20px rgba(22,163,74,0.4);
+      transition: transform var(--transition), box-shadow var(--transition);
+      animation: float 3s ease-in-out infinite;
+    }
+    .wa-float:hover {
+      transform: scale(1.12);
+      box-shadow: 0 8px 30px rgba(22,163,74,0.55);
+      animation: none;
+    }
+    .wa-float svg { width: 28px; height: 28px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .story-visual { height: 260px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .footer-inner { grid-template-columns: 1fr; text-align: center; }
+      .footer-brand { justify-content: center; }
+      .footer-links { justify-content: center; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .btn-order-nav { display: none; }
+      .hamburger { display: flex; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .hero-cta { flex-direction: column; align-items: center; }
+      .hero-cta .btn { width: 100%; justify-content: center; max-width: 340px; }
+    }
+    @media (max-width: 480px) {
+      .section { padding: 3.5rem 1.25rem; }
+      .contact-map-wrap { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating WhatsApp -->
+<a class="wa-float" href="https://wa.me/966564374418?text=السلام%20عليكم%20🙏%0A%0AI%20would%20like%20to%20order%20from%20Purity%20Origins%20Hummus" target="_blank" rel="noopener" aria-label="Order on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <div class="nav-logo-icon">ح</div>
+      <div>
+        <div class="nav-logo-name">Purity Origins</div>
+        <div class="nav-logo-sub ar">أصالة الطعم</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://wa.me/966564374418?text=السلام%20عليكم%20🙏%0A%0AI%20would%20like%20to%20order%20from%20Purity%20Origins%20Hummus" class="btn-order-nav" target="_blank" rel="noopener">Order Now</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#menu" onclick="closeMobileNav()">Menu</a>
+  <a href="#why" onclick="closeMobileNav()">Why Us</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+  <a href="https://wa.me/966564374418" class="btn btn-whatsapp" style="margin-top:1rem;" target="_blank">Order on WhatsApp</a>
+</div>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-badge ar">
+      🌿 طازج يومياً — Fresh Daily
+      <span class="hero-badge-dot"></span>
+    </div>
+    <h1 class="hero-title-ar">أصالة الطعم</h1>
+    <h2 class="hero-title-en">Purity Origins</h2>
+    <p class="hero-tagline-ar ar">أصالة الطعم، نقاء المكونات</p>
+    <p class="hero-tagline-en">Authentic Levantine Flavors — Made Pure, Made Fresh</p>
+    <div class="hero-cta">
+      <a href="https://wa.me/966564374418?text=السلام%20عليكم%20🙏%0A%0AI%20would%20like%20to%20order%20from%20Purity%20Origins%20Hummus" class="btn btn-accent" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span class="ar">اطلب الآن</span> / Order Now
+      </a>
+      <a href="#menu" class="btn btn-outline">
+        <span class="ar">شاهد قائمتنا</span> / View Menu
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+    </svg>
+  </div>
+</section>
+
+<!-- Story -->
+<section id="story" class="section">
+  <div class="container">
+    <div class="story-grid">
+      <div class="reveal">
+        <span class="section-label">Our Story</span>
+        <h2 class="section-title">Rooted in Tradition</h2>
+        <h3 class="section-title-ar ar">قصتنا</h3>
+        <p>Born from a love of Syrian home cooking, Purity Origins brings the soul of Levantine cuisine to Riyadh. Every dish is made fresh daily — no shortcuts, no compromises. Just pure origins.</p>
+        <p class="ar" style="margin-top:0.75rem;">وُلدنا من حب الطبخ السوري التقليدي، ونحمل روح المطبخ اللبناني إلى الرياض. كل طبق يُحضّر طازجاً يومياً — بدون اختصارات، بدون تنازلات. فقط أصالة حقيقية.</p>
+      </div>
+      <div class="story-visual reveal">
+        <div class="story-visual-bg"></div>
+        <div class="story-visual-inner">
+          <div class="story-visual-icon">🍽️</div>
+          <div class="story-visual-word ar">أصالة</div>
+          <div class="story-visual-sub">Authenticity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Menu -->
+<section id="menu" class="section">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:3rem;">
+      <span class="section-label">Our Menu</span>
+      <h2 class="section-title">Menu Highlights</h2>
+      <h3 class="section-title-ar ar">أبرز الأطباق</h3>
+      <p class="section-sub">Handcrafted dishes celebrating authentic flavors of Syria and Lebanon</p>
+    </div>
+    <div class="menu-grid">
+      <div class="dish-card reveal">
+        <div class="dish-emoji">🫘</div>
+        <div class="dish-name-ar ar">حمص أصلي</div>
+        <div class="dish-name-en">Classic Hummus</div>
+        <div class="dish-desc">Stone-ground chickpeas, tahini, lemon, olive oil. The original.</div>
+      </div>
+      <div class="dish-card reveal">
+        <div class="dish-emoji">🥙</div>
+        <div class="dish-name-ar ar">فلافل مقرمش</div>
+        <div class="dish-name-en">Crispy Falafel</div>
+        <div class="dish-desc">Herb-packed, golden fried, served with fresh veggies and tahini.</div>
+      </div>
+      <div class="dish-card reveal">
+        <div class="dish-emoji">🍞</div>
+        <div class="dish-name-ar ar">فتة شامية</div>
+        <div class="dish-name-en">Syrian Fatteh</div>
+        <div class="dish-desc">Toasted bread, creamy yogurt, chickpeas, pine nuts — a Levantine classic.</div>
+      </div>
+      <div class="dish-card reveal">
+        <div class="dish-emoji">🌯</div>
+        <div class="dish-name-ar ar">شاورما لحم</div>
+        <div class="dish-name-en">Meat Shawarma</div>
+        <div class="dish-desc">Slow-marinated meat, wrapped fresh, full of flavor.</div>
+      </div>
+      <div class="dish-card reveal">
+        <div class="dish-emoji">🫘</div>
+        <div class="dish-name-ar ar">فول مدمس</div>
+        <div class="dish-name-en">Foul Medames</div>
+        <div class="dish-desc">Slow-cooked fava beans, olive oil, cumin — a breakfast legend.</div>
+      </div>
+      <div class="dish-card reveal">
+        <div class="dish-emoji">🍖</div>
+        <div class="dish-name-ar ar">مشاوي مشكلة</div>
+        <div class="dish-name-en">Mixed Grill</div>
+        <div class="dish-desc">Grilled meats platter, served with bread, garlic sauce, pickles.</div>
+      </div>
+    </div>
+    <div class="text-center reveal">
+      <a href="https://wa.me/966564374418?text=السلام%20عليكم%20🙏%0A%0AI%20would%20like%20to%20order%20from%20Purity%20Origins%20Hummus" class="btn btn-whatsapp" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span class="ar">اطلب الآن على واتساب</span> / Order on WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Why -->
+<section id="why" class="section" style="background:rgba(255,255,255,0.5);">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:3rem;">
+      <span class="section-label">Why Choose Us</span>
+      <h2 class="section-title">Why Purity Origins</h2>
+      <h3 class="section-title-ar ar">لماذا أصالة النقاء</h3>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon">🌿</div>
+        <div class="why-title-ar ar">مكونات نقية</div>
+        <div class="why-title-en">Pure Ingredients</div>
+        <div class="why-desc">No preservatives. No shortcuts. Real food.</div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon">👨‍🍳</div>
+        <div class="why-title-ar ar">وصفات أصيلة</div>
+        <div class="why-title-en">Authentic Recipes</div>
+        <div class="why-desc">Traditional Syrian recipes passed down, made fresh every day.</div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon">📍</div>
+        <div class="why-title-ar ar">في قلب الرياض</div>
+        <div class="why-title-en">Heart of Riyadh</div>
+        <div class="why-desc">Find us near King Abdullah Park, Al Malaz district.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="text-center reveal" style="margin-bottom:3rem;">
+      <span class="section-label">Get In Touch</span>
+      <h2 class="section-title">Contact & Order</h2>
+      <h3 class="section-title-ar ar">تواصل معنا</h3>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-value">Near King Abdullah Park, Al Malaz District, Riyadh</div>
+            <div class="contact-value-ar ar">بالقرب من حديقة الملك عبدالله، حي الملز، الرياض</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-label">Phone / WhatsApp</div>
+            <div class="contact-value"><a href="tel:+966564374418">+966 56 437 4418</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">⏰</div>
+          <div>
+            <div class="contact-label">Working Hours</div>
+            <div class="contact-value">Mon – Sun: 11:00 AM – 11:00 PM</div>
+            <div class="contact-value-ar ar">الاثنين – الأحد: 11:00 صباحاً – 11:00 مساءً</div>
+          </div>
+        </div>
+        <div class="contact-ctas">
+          <a href="tel:+966564374418" class="btn btn-accent">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            Call Now — +966 56 437 4418
+          </a>
+          <a href="https://wa.me/966564374418?text=السلام%20عليكم%20🙏%0A%0AI%20would%20like%20to%20order%20from%20Purity%20Origins%20Hummus" class="btn btn-whatsapp" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span class="ar">راسلنا على واتساب</span> / Message on WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="contact-map-wrap reveal">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.8!2d46.7398!3d24.6666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f0534314dc993:0x1c47d4e7c8a0c9db!2sPurity%20Origins%20Hummus!5e0!3m2!1sen!2ssa!4v1700000000000"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Purity Origins Hummus Location">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">ح</div>
+      <div>
+        <div class="footer-brand-name">Purity Origins</div>
+        <div class="footer-brand-sub ar">أصالة الطعم</div>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>Authentic Syrian & Lebanese Cuisine</p>
+      <p class="ar">المطبخ السوري واللبناني الأصيل</p>
+      <p style="margin-top:0.5rem;">© 2026 <span>Purity Origins Hummus</span>. All rights reserved.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#menu">Menu</a>
+      <a href="#why">Why Us</a>
+      <a href="#contact">Contact</a>
+      <a href="tel:+966564374418">+966 56 437 4418</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile nav
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileClose = document.getElementById('mobileClose');
+
+  hamburger.addEventListener('click', () => {
+    mobileNav.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  mobileClose.addEventListener('click', closeMobileNav);
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
+        const idx = siblings.indexOf(entry.target);
+        setTimeout(() => entry.target.classList.add('visible'), idx * 90);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
